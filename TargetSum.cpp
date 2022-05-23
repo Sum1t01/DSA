@@ -32,4 +32,5 @@ int main()
     int target = 3;
     dp.resize(nums.size()+1,vector<int>(target+1,-1));
     cout << target_sum(nums, target, nums.size());
+    // this is not working at all
 }
