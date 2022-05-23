@@ -96,5 +96,5 @@ int main()
     int m = 1, n = 1;
     // cout<<count(strs[2].begin(),strs[2].end(),'1');
     dp.resize(strs.size() + 1, vector<vector<int>>(m + 1, vector<int>(n + 1, -1)));
-    cout << max_subset_01_bottomup(strs, m, n, strs.size());
+    cout << max_subset_01_memoization(strs, m, n, strs.size());
 }
