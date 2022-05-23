@@ -1,0 +1,88 @@
+#include<bits/stdc++.h>
+
+using namespace std;
+
+vector<vector<int>>dp;
+
+bool EqualSum(vector<int> & nums, int sum, int n)
+{
+    if(sum==0)
+    {
+        return true;
+    }
+    if(n==0)
+    {
+        return sum==0;
+    }
+    if(nums[n-1]>sum)
+    {
+        return EqualSum(nums,sum,n-1);
+    }
+
+    return EqualSum(nums,sum,n-1) || EqualSum(nums,sum-nums[n-1],n-1);
+}
+
+bool EqualSum_memoization(vector<int> & nums, int sum, int n)
+{
+    if(sum==0)
+    {
+        return true;
+    }
+    if(n==0)
+    {
+        return sum==0;
+    }
+    if(dp[n][sum]!=-1)
+    {
+        return dp[n][sum];
+    }
+    if(nums[n-1]>sum)
+    {
+        return dp[n][sum]=EqualSum_memoization(nums,sum,n-1);
+    }
+    return dp[n][sum]=EqualSum_memoization(nums,sum,n-1) || EqualSum_memoization(nums,sum-nums[n-1],n-1);
+}
+
+bool EqualSum_bottomup(vector<int> &nums, int sum , int n)
+{
+    for(int i=0;i<=nums.size();i++)
+    {
+        for(int j=0;j<=sum;j++)
+        {
+            if(i==0|| j==0)
+            {
+                dp[i][j]=(j==0)?true:false;
+            }
+        }
+    }
+
+    for(int i=1;i<=nums.size();i++)
+    {
+        for(int j=1;j<=sum;j++)
+        {
+            if(nums[i-1]>j)
+            {
+                dp[i][j]=dp[i-1][j];
+            }
+            else
+            {
+                dp[i][j]=dp[i-1][j] || dp[i-1][j-nums[i-1]];
+            }
+        }
+    }
+    return dp[nums.size()][sum];
+}
+
+int main()
+{
+    vector<int>nums = {1,9,11,5};
+    int sum=accumulate(begin(nums),end(nums),0);
+    if(sum%2!=0)
+    {
+        cout<<false;
+    }
+    sum=sum>>1;
+    dp.resize(nums.size()+1,vector<int>(sum+1,-1));
+    cout<<EqualSum(nums,sum,nums.size());
+    cout<<EqualSum_bottomup(nums,sum,nums.size());
+}
